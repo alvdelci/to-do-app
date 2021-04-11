@@ -25,6 +25,10 @@
         "backgroundColor": "#FFFFFF"
       }
     },
+    "AndroidStatusBar":{
+      "barStyle": "light-content",
+      "backgroundColor": "#000"
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     }
