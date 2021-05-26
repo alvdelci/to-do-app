@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import { Ionicons } from '@expo/vector-icons';
 import TaskList from './src/components/TaskList';
 import * as Animatable from 'react-native-animatable';
@@ -57,10 +58,10 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#171d31" barStyle="light-content"></StatusBar>
 
+      {/** Tela inicial de exibição das tasks */}
       <View style={styles.content}>
         <Text style={styles.title}>Minhas Tarefas</Text>
       </View>
-
       {/**Lista de Tarefas*/}
       <FlatList
         marginHorizontal={10}
@@ -70,6 +71,7 @@ export default function App() {
         renderItem={({ item }) => <TaskList data={item} handleDelete={handleDelete} />}
       />
 
+      {/** Tela de criação de novas tasks */}
       <Modal animationType="slide" transparent={false} visible={open}>
         <SafeAreaView style={styles.modal}>
 
@@ -77,7 +79,7 @@ export default function App() {
             <TouchableOpacity onPress={() => setOpen(false)}>
               <Ionicons style={{ marginLeft: 5, marginRight: 5 }} name="md-arrow-back" size={30} color="#fff" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Nova Tarefa</Text>
+            <Text style={styles.modalTitle}>Adicionar Tarefa</Text>
           </View>
 
           <Animatable.View style={styles.modalBody} animation="fadeInUp">
@@ -85,7 +87,7 @@ export default function App() {
               multiline={true}
               placeholderTextColor="#747474"
               autoCorrect={false}
-              placeholder="O que precisa fazer?"
+              placeholder="Ex: Estudar algo novo."
               style={styles.input}
               value={input}
               onChangeText={(texto) => setInput(texto)}
@@ -97,7 +99,6 @@ export default function App() {
           </Animatable.View>
         </SafeAreaView>
       </Modal>
-
 
       <AnimatedBtn
         style={styles.fab}
@@ -112,7 +113,7 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
+//Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -189,10 +190,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     height: 40,
-    borderRadius: 5
+    borderRadius: 5,
   },
 
   handleAddText: {
-    fontSize: 20
+    fontSize: 20,
   }
 });

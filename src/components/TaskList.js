@@ -21,6 +21,7 @@ export default function TaskList({ data, handleDelete }) {
     );
 }
 
+//Styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
