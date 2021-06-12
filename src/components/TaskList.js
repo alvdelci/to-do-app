@@ -11,7 +11,7 @@ export default function TaskList({ data, handleDelete }) {
             useNativeDriver
         >
             <TouchableOpacity onPress={() => handleDelete(data)}>
-                <Ionicons name="md-checkmark-circle" size={20} color="#121212" />
+                <Ionicons name="checkmark-circle" size={20} color="#0094ff" />
             </TouchableOpacity>
 
             <View>
