@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput, Animated } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import TaskList from './src/components/TaskList';
 import * as Animatable from 'react-native-animatable';
@@ -23,6 +23,8 @@ export default function App() {
       if (taskStorage) {
         setTask(JSON.parse(taskStorage));
       }
+
+      console.log(taskStorage);
     }
 
     loadTasks();
@@ -43,7 +45,7 @@ export default function App() {
   useEffect(() => {
 
     async function saveCheckedTasks() {
-      await AsyncStorage.setItem('@task', JSON.stringify(checkedTasks));
+      await AsyncStorage.setItem('@checkedTasks', JSON.stringify(checkedTasks));
     }
 
     saveCheckedTasks()
@@ -66,9 +68,14 @@ export default function App() {
   const handleDelete = useCallback((data) => {
     const find = task.filter(r => r.key !== data.key);
     setTask(find);
-    const removed = task.filter(r => r.key === data.key);
+    const removed = checkedTasks.filter(r => r.key !== data.key);
     setCheckedTasks(removed);
   });
+
+
+/**
+ * Só ta salvando a ultima task concluída, não sei o porquê
+ */
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,6 +105,7 @@ export default function App() {
         keyExtractor={(item) => String(item.key)}
         renderItem={({ item }) => <TaskList data={item} handleDelete={handleDelete} />}
       />
+
 
       {/** Tela de criação de novas tasks */}
       <Modal animationType="slide" transparent={false} visible={open}>
@@ -136,12 +144,12 @@ export default function App() {
             <TouchableOpacity onPress={() => setCheckOpen(false)}>
               <Ionicons style={{ marginLeft: 5, marginRight: 5 }} name="md-arrow-back" size={30} color="#fff" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Tarefas Concluídas</Text>
+            <Text style={styles.modalTitle}>Estamos a todo vapor!</Text>
           </View>
 
           <Animatable.View style={styles.modalBody} animation="fadeInUp">
             <View style={styles.content}>
-              <Text style={styles.title}>Estamos a todo vapor!!!</Text>
+              <Text style={styles.title}>Tarefas Concluídas</Text>
             </View>
             {/**Lista de Tarefas concluídas*/}
             <FlatList
@@ -236,10 +244,9 @@ const styles = StyleSheet.create({
   },
 
   modalTitle: {
-    marginLeft: 15,
     fontSize: 23,
     color: '#fff',
-    marginLeft: 65
+    marginLeft: 45
   },
 
   modalBody: {
